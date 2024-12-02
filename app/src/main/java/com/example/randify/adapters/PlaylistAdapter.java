@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.randify.PlayerService;
@@ -36,11 +37,23 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.SongVi
         Song song = getSongAtPosition(position);
         holder.songName.setText(song.getName());
         holder.artistName.setText(song.getArtist());
-        holder.songImage.setImageResource(song.getImageResourceId());
 
-        // Set click listener for the entire card
-        holder.itemView.setOnClickListener(v -> playerService.play(song.getName()));
+        // Check if this song is currently playing
+        if (playerService.getCurrentSong() != null &&
+                playerService.getCurrentSong().getName().equals(song.getName())) {
+            holder.songName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.colorPrimary));
+        } else {
+            holder.songName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.textPrimary));
+        }
+
+        holder.artistName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.textSecondary));
+        holder.itemView.setOnClickListener(v -> {
+            playerService.play(song.getName());
+        });
+
+        holder.songImage.setImageResource(song.getImageResourceId());
     }
+
 
     @Override
     public int getItemCount() {

@@ -11,6 +11,11 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingBottom="125dp">
+        <View
+            android:id="@+id/gradientBackground"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:background="@drawable/playlist_gradient_background" />
 
         <ImageView
             android:id="@+id/playlistImageView"
@@ -21,12 +26,35 @@
             app:shapeAppearanceOverlay="@style/roundedImageView"
             android:contentDescription="Playlist profile picture" />
 
+        <TextView
+            android:id="@+id/playlistTitleTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playlistImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/textPrimary"
+            android:text="CSE 214 Feels" />
+
+        <TextView
+            android:id="@+id/playlistDescriptionTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playlistTitleTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/textSecondary"
+            android:text="for when hw7 beats you down" />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playlistRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            android:layout_below="@id/playlistImageView"
+            android:layout_below="@id/playlistDescriptionTextView"
             android:layout_marginTop="16dp"
             />
 

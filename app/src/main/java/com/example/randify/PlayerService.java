@@ -3,9 +3,9 @@ package com.example.randify;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.randify.adapters.PlaylistAdapter;
 import com.example.randify.models.Song;
 import com.example.randify.models.SongLinkedList;
 
@@ -21,6 +21,7 @@ public class PlayerService {
     private SongLinkedList currentPlaylist;
     private TextView songTitleTextView;
     private ImageButton playPauseButton;
+    private PlaylistAdapter adapter;
 
     private PlayerService(Context context) {
         this.context = context;
@@ -42,7 +43,7 @@ public class PlayerService {
         songMap.put("Overture1", new Song("Overture Guy", "Some album", "Overture1", 15, R.raw.overture, R.drawable.defaultimage));
         songMap.put("Overture2", new Song("Overture Guy", "Some album", "Overture2", 15, R.raw.overture, R.drawable.defaultimage));
 
-        currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "CSE214 Feels", "When you spend 10 hours on a homework just to realize you have no idea what you're doing.");
+        currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "CSE214 Feels", "for when hw7 beats you down");
 
         for (Song song : songMap.values()) {
             currentPlaylist.addSongToEnd(song);
@@ -64,6 +65,7 @@ public class PlayerService {
             this.currentSongPlayer = MediaPlayer.create(this.context, this.currentSong.getAudioResourceId());
             this.currentSongPlayer.setVolume(2, 2);
             this.currentSongPlayer.start();
+            notifyAdapter();
 
             updatePlayerBar(this.currentSong);
         }
@@ -135,6 +137,15 @@ public class PlayerService {
         return currentSong;
     }
 
+    public void setAdapater(PlaylistAdapter adapter) {
+        this.adapter = adapter;
+    }
+
+    public void notifyAdapter() {
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
     private void cancelSong() {
         if (this.currentSongPlayer != null) {
             this.currentSongPlayer.stop();
