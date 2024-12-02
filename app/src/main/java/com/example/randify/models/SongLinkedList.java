@@ -43,8 +43,6 @@ public class SongLinkedList {
      *  The song was not found or could not be played.
      */
     public void play(String name) throws IllegalArgumentException {
-        SongNode originalCursor = cursor;
-
         // is song name in playlist
         cursor = head;
         boolean found = false;
@@ -60,7 +58,6 @@ public class SongLinkedList {
         }
 
         Song playData = cursor.getData();
-        cursor = originalCursor;
 
         if (!found) {
             throw new IllegalArgumentException(
@@ -334,6 +331,56 @@ public class SongLinkedList {
 
         return songString;
     }
+
+    public Song getCurrentSong() {
+        return this.cursor.getData();
+    }
+
+    public void addSongToEnd(Song newSong) {
+        if (newSong == null) {
+            throw new IllegalArgumentException("Cannot add a null song.");
+        }
+
+        SongNode newNode = new SongNode();
+        newNode.setData(newSong);
+
+        if (tail == null) {
+            // If the list is empty, set both head and tail to the new node
+            head = newNode;
+            tail = newNode;
+            cursor = newNode;
+        } else {
+            // Add the new node after the tail
+            tail.setNext(newNode);
+            newNode.setPrev(tail);
+            tail = newNode;
+        }
+
+        size++;
+    }
+
+    public void removeSong(String name) {
+        if (name == null || name.isEmpty()) {
+            throw new IllegalArgumentException("Song name cannot be null or empty.");
+        }
+
+        SongNode originalCursor = cursor;
+        cursor = head;
+
+        for (int i = 0; i < size; i++) {
+            if (cursor.getData().getName().equals(name)) {
+                removeCursor();
+                return;
+            }
+            if (i < size - 1) {
+                cursorForward();
+            }
+        }
+
+        cursor = originalCursor;
+        throw new IllegalArgumentException("Song '" + name + "' not found in the playlist.");
+    }
+
 
     /* HELPER METHODS */
     private void setCursorRandom() {

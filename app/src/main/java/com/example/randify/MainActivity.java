@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         /* Create the PlayerService singleton */
-        PlayerService.getInstance(getApplicationContext()).loadSongData();
+        PlayerService.getInstance(getApplicationContext()).loadInitialData();
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
