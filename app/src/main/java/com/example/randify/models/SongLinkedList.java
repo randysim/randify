@@ -20,10 +20,41 @@ public class SongLinkedList {
     private SongNode cursor;
     private int size;
 
+    private int playlistPictureResource;
+    private String name;
+    private String description;
+
     /**
-     * Returns an instance of <code>SongLinkedList</code> with empty fields.
+     * Returns an instance of <code>SongLinkedList</code>
      */
-    public SongLinkedList() {}
+    public SongLinkedList(int playlistPictureResource, String name, String description) {
+        this.playlistPictureResource = playlistPictureResource;
+        this.name = name;
+        this.description = description;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String newName) {
+        this.name = newName;
+    }
+    public String getDescription() {
+        return this.description;
+    }
+
+    public void setDescription(String newDescription) {
+        this.description = newDescription;
+    }
+
+    public int getPlaylistPicture() {
+        return this.playlistPictureResource;
+    }
+
+    public void setPlaylistPicture(int newResource) {
+        this.playlistPictureResource = newResource;
+    }
 
     /**
      * Plays a song.
@@ -94,13 +125,13 @@ public class SongLinkedList {
      */
     public void cursorForward() throws IllegalStateException {
         if (cursor == null) {
-            throw new IllegalStateException("Cannot move cursor forward. List is empty.");
+            return;
         }
 
         if (cursor != tail) {
             cursor = cursor.getNext();
         } else {
-            throw new IllegalStateException("Already at the end of the playlist.");
+            random();
         }
     }
 
@@ -125,7 +156,7 @@ public class SongLinkedList {
         if (cursor != head) {
             cursor = cursor.getPrev();
         } else {
-            throw new IllegalStateException("Already at the beginning of the playlist.");
+            random();
         }
     }
 
@@ -392,6 +423,10 @@ public class SongLinkedList {
         }
 
         return current.getData();
+    }
+
+    public void setCursorToBeginning () {
+        cursor = head;
     }
 
     /* HELPER METHODS */
