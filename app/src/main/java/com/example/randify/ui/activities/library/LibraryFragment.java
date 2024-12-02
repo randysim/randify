@@ -1,4 +1,4 @@
-package com.example.randify.ui.notifications;
+package com.example.randify.ui.activities.library;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.randify.databinding.FragmentNotificationsBinding;
+import com.example.randify.databinding.FragmentLibraryBinding;
 
-public class NotificationsFragment extends Fragment {
+public class LibraryFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentLibraryBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        LibraryViewModel libraryViewModel =
+                new ViewModelProvider(this).get(LibraryViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentLibraryBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
         final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        libraryViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
