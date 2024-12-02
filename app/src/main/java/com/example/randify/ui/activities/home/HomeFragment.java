@@ -26,15 +26,8 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        showPlaylistFragment();
+        //showPlaylistFragment();
         return root;
-    }
-
-    private void showPlaylistFragment() {
-        PlaylistFragment playlistFragment = new PlaylistFragment();
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.playlistContainer, playlistFragment)
-                .commit();
     }
 
     @Override

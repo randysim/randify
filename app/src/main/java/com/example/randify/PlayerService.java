@@ -3,6 +3,7 @@ package com.example.randify;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.randify.models.Song;
@@ -34,12 +35,14 @@ public class PlayerService {
     }
 
     public void loadInitialData() {
-        songMap.put("Entry of Gladiators", new Song("Gladiator Guy", "Some album", "Entry of Gladiators", 15, R.raw.entry_of_gladiators));
-        songMap.put("Fanfare", new Song("Fanfare Guy", "Some album", "Fanfare", 15, R.raw.fanfare));
-        songMap.put("Ode to Joy", new Song("Beethoven", "Some album", "Ode to Joy", 15, R.raw.ode_to_joy));
-        songMap.put("Overture", new Song("Overture Guy", "Some album", "Overture", 15, R.raw.overture));
+        songMap.put("Entry of Gladiators", new Song("Gladiator Guy", "Some album", "Entry of Gladiators", 15, R.raw.entry_of_gladiators, R.drawable.defaultimage));
+        songMap.put("Fanfare", new Song("Fanfare Guy", "Some album", "Fanfare", 15, R.raw.fanfare, R.drawable.defaultimage));
+        songMap.put("Ode to Joy", new Song("Beethoven", "Some album", "Ode to Joy", 15, R.raw.ode_to_joy, R.drawable.defaultimage));
+        songMap.put("Overture", new Song("Overture Guy", "Some album", "Overture", 15, R.raw.overture, R.drawable.defaultimage));
+        songMap.put("Overture1", new Song("Overture Guy", "Some album", "Overture1", 15, R.raw.overture, R.drawable.defaultimage));
+        songMap.put("Overture2", new Song("Overture Guy", "Some album", "Overture2", 15, R.raw.overture, R.drawable.defaultimage));
 
-        currentPlaylist = new SongLinkedList(R.raw.playlistpicture, "CSE214 Feels", "When you spend 10 hours on a homework just to realize you have no idea what you're doing.");
+        currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "CSE214 Feels", "When you spend 10 hours on a homework just to realize you have no idea what you're doing.");
 
         for (Song song : songMap.values()) {
             currentPlaylist.addSongToEnd(song);

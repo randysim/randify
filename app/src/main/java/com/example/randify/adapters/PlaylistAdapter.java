@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +36,10 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.SongVi
         Song song = getSongAtPosition(position);
         holder.songName.setText(song.getName());
         holder.artistName.setText(song.getArtist());
-        holder.playButton.setOnClickListener(v -> playerService.play(song.getName()));
+        holder.songImage.setImageResource(song.getImageResourceId());
+
+        // Set click listener for the entire card
+        holder.itemView.setOnClickListener(v -> playerService.play(song.getName()));
     }
 
     @Override
@@ -53,15 +57,16 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.SongVi
     }
 
     static class SongViewHolder extends RecyclerView.ViewHolder {
+        ImageView songImage;
         TextView songName;
         TextView artistName;
-        Button playButton;
 
         SongViewHolder(View itemView) {
             super(itemView);
+            songImage = itemView.findViewById(R.id.songImage);
             songName = itemView.findViewById(R.id.songName);
             artistName = itemView.findViewById(R.id.artistName);
-            playButton = itemView.findViewById(R.id.playButton);
         }
     }
+
 }

@@ -2,9 +2,13 @@ package com.example.randify;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.randify.adapters.PlaylistAdapter;
+import com.example.randify.ui.WrapContentLinearLayoutManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +16,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.randify.databinding.ActivityMainBinding;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,11 +45,20 @@ public class MainActivity extends AppCompatActivity {
         ImageButton prevButton = findViewById(R.id.prevButton);
 
         playerService.setPlayerBarViews(songTitleTextView, playPauseButton);
-
+        ImageView imageView = findViewById(R.id.playlistImageView);
+        imageView.setImageResource(R.drawable.playlistpicture);
 
         playPauseButton.setOnClickListener(v -> playerService.togglePlayPause());
         nextButton.setOnClickListener(v -> playerService.playNext());
         prevButton.setOnClickListener(v -> playerService.playPrevious());
+
+        RecyclerView songListRecyclerView = findViewById(R.id.playlistRecyclerView);
+        songListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        PlaylistAdapter playlistAdapter= new PlaylistAdapter(playerService.getCurrentPlaylist(), playerService);
+        songListRecyclerView.setAdapter(playlistAdapter);
+        songListRecyclerView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        songListRecyclerView.requestLayout();
+        songListRecyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getApplicationContext()));
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.

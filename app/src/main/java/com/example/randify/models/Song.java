@@ -13,6 +13,7 @@ public class Song {
     private String name;
     private int length;
     private int audioResourceId;
+    private int imageResourceId;
 
     /**
      * Returns an instance of <code>Song</code> with predetermined fields.
@@ -22,13 +23,23 @@ public class Song {
         String album,
         String name,
         int length,
-        int audioResourceId
+        int audioResourceId,
+        int imageResourceId
     ) {
         this.artist = artist;
         this.album = album;
         this.name = name;
         this.length = length;
         this.audioResourceId = audioResourceId;
+        this.imageResourceId = imageResourceId;
+    }
+
+    public int getImageResourceId() {
+        return this.imageResourceId;
+    }
+
+    public void setImageResourceId(int imageResourceId) {
+        this.imageResourceId = imageResourceId;
     }
 
     /**
