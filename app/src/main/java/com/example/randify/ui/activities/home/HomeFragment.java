@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.randify.R;
 import com.example.randify.databinding.FragmentHomeBinding;
+import com.example.randify.ui.components.PlaylistFragment;
 
 public class HomeFragment extends Fragment {
 
@@ -24,9 +26,15 @@ public class HomeFragment extends Fragment {
         binding = FragmentHomeBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textHome;
-        homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        showPlaylistFragment();
         return root;
+    }
+
+    private void showPlaylistFragment() {
+        PlaylistFragment playlistFragment = new PlaylistFragment();
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.playlistContainer, playlistFragment)
+                .commit();
     }
 
     @Override

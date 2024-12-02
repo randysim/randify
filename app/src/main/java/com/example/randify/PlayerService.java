@@ -36,8 +36,14 @@ public class PlayerService {
         songMap.put("Overture", new Song("Overture Guy", "Some album", "Overture", 15, R.raw.overture));
 
         currentPlaylist = new SongLinkedList();
-        playlistMap.put("Default Playlist", currentPlaylist);
+
+        for (Song song : songMap.values()) {
+            currentPlaylist.addSongToEnd(song);
+        }
+
+        playlistMap.put("All Songs", currentPlaylist);
     }
+
 
     public void playSong(String name) {
         if (songMap.containsKey(name) && context != null) {
@@ -45,6 +51,7 @@ public class PlayerService {
             cancelSong();
 
             this.currentSongPlayer = MediaPlayer.create(this.context, this.currentSong.getAudioResourceId());
+            this.currentSongPlayer.setVolume(2, 2);
             this.currentSongPlayer.start();
         }
     }
@@ -84,6 +91,10 @@ public class PlayerService {
 
     public void removeSong(String name) {
         this.currentPlaylist.removeSong(name);
+    }
+
+    public SongLinkedList getCurrentPlaylist() {
+        return this.currentPlaylist;
     }
 
     private void cancelSong() {
