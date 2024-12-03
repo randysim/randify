@@ -4,7 +4,15 @@
         android:type="linear"
         android:angle="270"
         android:startColor="#6e623b"
-        android:endColor="#191414"
-        android:centerColor="#6e623b"
-        android:centerY="0.7" />
+        android:endColor="#191414">
+        <item android:color="#6e623b" android:offset="0.0"/>
+        <item android:color="#6e623b" android:offset="0.7"/>
+        <item android:color="#635932" android:offset="0.8"/>
+        <item android:color="#595029" android:offset="0.85"/>
+        <item android:color="#4e4720" android:offset="0.9"/>
+        <item android:color="#443e17" android:offset="0.93"/>
+        <item android:color="#39350e" android:offset="0.96"/>
+        <item android:color="#2f2c05" android:offset="0.98"/>
+        <item android:color="#191414" android:offset="1.0"/>
+    </gradient>
 </shape>

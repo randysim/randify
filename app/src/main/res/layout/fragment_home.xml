@@ -10,19 +10,20 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingBottom="125dp">
+        android:paddingBottom="150dp">
         <View
             android:id="@+id/gradientBackground"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:background="@drawable/playlist_gradient_background" />
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/playlistImageView"
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_centerHorizontal="true"
             android:scaleType="centerCrop"
+            android:elevation="8dp"
             app:shapeAppearanceOverlay="@style/roundedImageView"
             android:contentDescription="Playlist profile picture" />
 

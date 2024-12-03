@@ -1,9 +1,15 @@
 package com.example.randify;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
 
 import com.example.randify.adapters.PlaylistAdapter;
 import com.example.randify.models.Song;
@@ -22,6 +28,9 @@ public class PlayerService {
     private TextView songTitleTextView;
     private ImageButton playPauseButton;
     private PlaylistAdapter adapter;
+    private TextView songArtistView;
+    private ImageView albumArtView;
+    private CardView playerView;
 
     private PlayerService(Context context) {
         this.context = context;
@@ -63,11 +72,10 @@ public class PlayerService {
             cancelSong();
 
             this.currentSongPlayer = MediaPlayer.create(this.context, this.currentSong.getAudioResourceId());
-            this.currentSongPlayer.setVolume(2, 2);
-            this.currentSongPlayer.start();
-            notifyAdapter();
 
-            updatePlayerBar(this.currentSong);
+            currentSongPlayer.start();
+            notifyAdapter();
+            updatePlayerBar(currentSong);
         }
     }
 
@@ -89,14 +97,26 @@ public class PlayerService {
         this.currentPlaylist.removeSong(name);
     }
 
-    public void setPlayerBarViews(TextView titleView, ImageButton playPauseButton) {
+    public void setPlayerBarViews(TextView titleView, ImageButton playPauseButton, TextView artistNameView, ImageView albumArtView, CardView playerView) {
         this.songTitleTextView = titleView;
         this.playPauseButton = playPauseButton;
+        this.songArtistView = artistNameView;
+        this.albumArtView = albumArtView;
+        this.playerView = playerView;
     }
 
     public void updatePlayerBar(Song newSong) {
         if (songTitleTextView != null) {
             songTitleTextView.setText(newSong.getName());
+        }
+        if (songArtistView != null) {
+            songArtistView.setText(newSong.getArtist());
+        }
+        if (albumArtView != null) {
+            albumArtView.setImageResource(newSong.getImageResourceId());
+        }
+        if (playerView != null) {
+            playerView.setBackgroundColor(getAverageColor(newSong.getImageResourceId()));
         }
         updatePlayPauseButton();
     }
@@ -152,5 +172,41 @@ public class PlayerService {
             this.currentSongPlayer.release();
             this.currentSongPlayer = null;
         }
+    }
+
+    private int calculateAverageColor(Bitmap bitmap) {
+        int R = 0; int G = 0; int B = 0;
+        int height = bitmap.getHeight();
+        int width = bitmap.getWidth();
+        int n = 0;
+        int[] pixels = new int[width * height];
+        bitmap.getPixels(pixels, 0, width, 0, 0, width, height);
+
+        for (int i = 0; i < pixels.length; i += 5) {
+            int color = pixels[i];
+            R += Color.red(color);
+            G += Color.green(color);
+            B += Color.blue(color);
+            n++;
+        }
+        return Color.rgb(R / n, G / n, B / n);
+    }
+
+    private int darkenColor(int color) {
+        float[] hsv = new float[3];
+        Color.colorToHSV(color, hsv);
+        hsv[2] *= 0.25f;
+        return Color.HSVToColor(hsv);
+    }
+
+    private int getAverageColor(int resourceId) {
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
+        int avgColor = darkenColor(calculateAverageColor(bitmap));
+
+        if (bitmap != null && !bitmap.isRecycled()) {
+            bitmap.recycle();
+        }
+
+        return avgColor;
     }
 }

@@ -12,6 +12,7 @@ import com.example.randify.ui.WrapContentLinearLayoutManager;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -37,18 +38,21 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        getSupportActionBar().setElevation(0);
+
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         TextView songTitleTextView = findViewById(R.id.songTitleTextView);
         ImageButton playPauseButton = findViewById(R.id.playPauseButton);
         ImageButton nextButton = findViewById(R.id.nextButton);
         ImageButton prevButton = findViewById(R.id.prevButton);
+        TextView songArtistTextView = findViewById(R.id.artistTextView);
+        ImageView albumArtView = findViewById(R.id.albumArtImageView);
+        CardView cardView = findViewById(R.id.playerCard);
 
-        playerService.setPlayerBarViews(songTitleTextView, playPauseButton);
+        playerService.setPlayerBarViews(songTitleTextView, playPauseButton, songArtistTextView, albumArtView, cardView);
         ImageView imageView = findViewById(R.id.playlistImageView);
         imageView.setImageResource(R.drawable.playlistpicture);
-
-
 
         playPauseButton.setOnClickListener(v -> playerService.togglePlayPause());
         nextButton.setOnClickListener(v -> playerService.playNext());

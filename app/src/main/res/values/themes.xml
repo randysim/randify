@@ -2,9 +2,11 @@
     <!-- Base application theme. -->
     <style name="Theme.Randify" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">#6e623b</item>
         <item name="colorOnPrimary">@color/textPrimary</item>
+        <item name="elevation">0dp</item>
+        <item name="android:elevation">0dp</item>
+        <item name="android:shadowRadius">0</item>
 
         <!-- Status bar color. -->
         <item name="android:statusBarColor">#6e623b</item>
@@ -13,5 +15,9 @@
     <style name="roundedImageView" parent="">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">8dp</item>
+    </style>
+    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">
+        <item name="android:textColorPrimary">@color/textPrimary</item>
+        <item name="android:background">#6e623b</item>
     </style>
 </resources>
