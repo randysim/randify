@@ -23,6 +23,7 @@ public class SongLinkedList {
     private int playlistPictureResource;
     private String name;
     private String description;
+    private Song prevSong;
 
     /**
      * Returns an instance of <code>SongLinkedList</code>
@@ -100,6 +101,7 @@ public class SongLinkedList {
         }
 
         PlayerService.getInstance(null).playSong(name);
+        prevSong = playData;
 
         System.out.println(
                 String.format(
@@ -253,7 +255,9 @@ public class SongLinkedList {
      */
     public Song random() {
         SongNode originalCursor = cursor;
-        setCursorRandom();
+        while (cursor == originalCursor) {
+            setCursorRandom();
+        }
         Song randomSong = cursor.getData();
 
         cursor = originalCursor;

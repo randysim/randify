@@ -32,11 +32,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/playlistImageView"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@color/textPrimary"
+            android:layout_marginLeft="24dp"
             android:text="CSE 214 Feels" />
 
         <TextView
@@ -44,10 +44,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/playlistTitleTextView"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="8dp"
             android:textSize="16sp"
             android:textColor="@color/textSecondary"
+            android:layout_marginLeft="24dp"
             android:text="for when hw7 beats you down" />
 
         <androidx.recyclerview.widget.RecyclerView
