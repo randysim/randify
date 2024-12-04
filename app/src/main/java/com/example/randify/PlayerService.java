@@ -61,14 +61,21 @@ public class PlayerService {
     public void loadInitialData() {
         songMap.put("LIMBO", new Song("keshi", "Some album", "LIMBO", R.raw.limbo, R.drawable.keshi1));
         songMap.put("dying to see you", new Song("bixby", "Some album", "dying to see you", R.raw.dyingtoseeyou, R.drawable.bixby1));
+        songMap.put("urs", new Song("NIKI", "Some album", "urs", R.raw.urs, R.drawable.niki1));
+        songMap.put("Ditto", new Song("NewJeans", "Some album", "Ditto", R.raw.ditto, R.drawable.newjeans1));
+        songMap.put("Kiss Me Right", new Song("keshi", "Some album", "Kiss Me Right", R.raw.kissmeright, R.drawable.keshi2));
+        songMap.put("Saturn", new Song("SZA", "Some album", "Saturn", R.raw.saturn, R.drawable.sza1));
+        songMap.put("Ghost", new Song("Justin Bieber", "Some album", "Ghost", R.raw.ghost, R.drawable.bieber1));
+        songMap.put("Paris In The Rain", new Song("Lauv", "Some album", "Paris In The Rain", R.raw.parisintherain, R.drawable.lauv1));
+        songMap.put("endlessly", new Song("bixby", "Some album", "endlessly", R.raw.endlessly, R.drawable.bixby1));
 
-        currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "cse214 feels", "for when hw7 beats you down");
+        currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "214 feels", "for when hw7 beats you down");
 
         for (Song song : songMap.values()) {
             currentPlaylist.addSongToEnd(song);
         }
 
-        playlistMap.put("CSE214 Feels", currentPlaylist);
+        playlistMap.put("214 feels", currentPlaylist);
 
         currentPlaylist.setCursorToBeginning();
         this.currentSong = currentPlaylist.getCurrentSong();
@@ -93,7 +100,7 @@ public class PlayerService {
                 @Override
                 public void run() {
                     if (currentSongPlayer != null) {
-                        int currentProgress = (int) ((currentSongPlayer.getCurrentPosition()/10)/currentSong.getLength());
+                        int currentProgress = ((currentSongPlayer.getCurrentPosition()/10)/currentSong.getLength());
                         songProgress.setProgress(currentProgress);
                         progressHandler.postDelayed(this, 100);
                     }
@@ -280,7 +287,7 @@ public class PlayerService {
     private int darkenColor(int color) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
-        hsv[2] = Math.max(Math.min(0.5f, hsv[2] * 0.5f), 0.2f);
+        hsv[2] = Math.max(Math.min(0.3f, hsv[2] * 0.5f), 0.2f);
         return Color.HSVToColor(hsv);
     }
 

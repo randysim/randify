@@ -37,7 +37,7 @@
             android:textStyle="bold"
             android:textColor="@color/textPrimary"
             android:layout_marginLeft="24dp"
-            android:text="CSE 214 Feels" />
+            android:text="214 feels" />
 
         <TextView
             android:id="@+id/playlistDescriptionTextView"
