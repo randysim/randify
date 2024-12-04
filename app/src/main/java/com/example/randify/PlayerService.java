@@ -62,7 +62,7 @@ public class PlayerService {
         songMap.put("LIMBO", new Song("keshi", "Some album", "LIMBO", R.raw.limbo, R.drawable.keshi1));
         songMap.put("dying to see you", new Song("bixby", "Some album", "dying to see you", R.raw.dyingtoseeyou, R.drawable.bixby1));
 
-        currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "CSE214 Feels", "for when hw7 beats you down");
+        currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "cse214 feels", "for when hw7 beats you down");
 
         for (Song song : songMap.values()) {
             currentPlaylist.addSongToEnd(song);
@@ -280,7 +280,7 @@ public class PlayerService {
     private int darkenColor(int color) {
         float[] hsv = new float[3];
         Color.colorToHSV(color, hsv);
-        hsv[2] *= 0.25f;
+        hsv[2] = Math.max(Math.min(0.5f, hsv[2] * 0.5f), 0.2f);
         return Color.HSVToColor(hsv);
     }
 
