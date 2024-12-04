@@ -49,15 +49,104 @@
             android:textColor="@color/textSecondary"
             android:layout_marginLeft="24dp"
             android:text="for when hw7 beats you down" />
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/playlistDescriptionTextView"
+            android:id="@+id/timeContainer"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="22dp">
+
+            <ImageButton
+                android:id="@+id/lockButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_private_icon"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:layout_centerVertical="true"
+                app:tint="@color/textSecondary"
+                />
+
+            <TextView
+                android:id="@+id/playlistLength"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/lockButton"
+                android:textSize="16sp"
+                android:textColor="@color/textSecondary"
+                android:layout_marginStart="8dp" />
+
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timeContainer"
+            android:id="@+id/iconContainer"
+            android:layout_marginTop="8dp"
+            android:paddingLeft="22dp"
+            android:paddingRight="22dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/checkmarkButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:src="@drawable/check_circle"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/colorPrimary" />
+
+                <ImageButton
+                    android:id="@+id/downloadButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/download_for_offline"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginStart="16dp"
+                    app:tint="@color/colorPrimary" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:orientation="horizontal">
+
+                <ImageButton
+                    android:id="@+id/shuffleButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/shuffle"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    app:tint="@color/textSecondary" />
+
+                <ImageButton
+                    android:id="@+id/playButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/play_circle"
+                    android:layout_gravity="center"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:layout_marginStart="16dp"
+                    app:tint="@color/colorPrimary" />
+            </LinearLayout>
+        </RelativeLayout>
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/playlistRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            android:layout_below="@id/playlistDescriptionTextView"
-            android:layout_marginTop="16dp"
-            />
+            android:layout_below="@id/iconContainer"
+            android:layout_marginTop="8dp" />
 
     </RelativeLayout>
 </ScrollView>

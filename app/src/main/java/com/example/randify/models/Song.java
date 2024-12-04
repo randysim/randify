@@ -1,5 +1,7 @@
 package com.example.randify.models;
 
+import com.example.randify.PlayerService;
+
 /**
  * The <code>Song</code> class is a wrapper that contains song data to be stored in <code>SongNode</code>
  *
@@ -22,14 +24,13 @@ public class Song {
         String artist,
         String album,
         String name,
-        int length,
         int audioResourceId,
         int imageResourceId
     ) {
         this.artist = artist;
         this.album = album;
         this.name = name;
-        this.length = length;
+        this.length = PlayerService.getInstance(null).getSongDurationSeconds(audioResourceId);
         this.audioResourceId = audioResourceId;
         this.imageResourceId = imageResourceId;
     }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.randify.adapters.PlaylistAdapter;
@@ -44,16 +45,32 @@ public class MainActivity extends AppCompatActivity {
 
         TextView songTitleTextView = findViewById(R.id.songTitleTextView);
         ImageButton playPauseButton = findViewById(R.id.playPauseButton);
+        ImageButton playlistPlayPause = findViewById(R.id.playButton);
+        ImageButton shuffleButton = findViewById(R.id.shuffleButton);
         ImageButton nextButton = findViewById(R.id.nextButton);
         ImageButton prevButton = findViewById(R.id.prevButton);
         TextView songArtistTextView = findViewById(R.id.artistTextView);
         ImageView albumArtView = findViewById(R.id.albumArtImageView);
         CardView cardView = findViewById(R.id.playerCard);
+        TextView playlistLengthView = findViewById(R.id.playlistLength);
+        ProgressBar songProgress = findViewById(R.id.songProgressBar);
 
-        playerService.setPlayerBarViews(songTitleTextView, playPauseButton, songArtistTextView, albumArtView, cardView);
+        playerService.setPlayerBarViews(
+                songTitleTextView,
+                playPauseButton,
+                songArtistTextView,
+                albumArtView,
+                cardView,
+                playlistLengthView,
+                songProgress,
+                playlistPlayPause,
+                shuffleButton
+        );
         ImageView imageView = findViewById(R.id.playlistImageView);
         imageView.setImageResource(R.drawable.playlistpicture);
 
+        shuffleButton.setOnClickListener(v -> playerService.toggleShuffle());
+        playlistPlayPause.setOnClickListener(v -> playerService.togglePlayPause());
         playPauseButton.setOnClickListener(v -> playerService.togglePlayPause());
         nextButton.setOnClickListener(v -> playerService.playNext());
         prevButton.setOnClickListener(v -> playerService.playPrevious());
@@ -77,6 +94,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
         playerService.updatePlayerBar(playerService.getCurrentSong());
+        playerService.updatePlaylist();
     }
 
     private void showErrorSnackbar(String errorMessage) {

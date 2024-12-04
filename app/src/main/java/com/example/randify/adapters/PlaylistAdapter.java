@@ -48,7 +48,11 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.SongVi
 
         holder.artistName.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.textSecondary));
         holder.itemView.setOnClickListener(v -> {
-            playerService.play(song.getName());
+            if (playerService.getCurrentSong().getName().equals(song.getName())) {
+                playerService.togglePlayPause();
+            } else {
+                playerService.play(song.getName());
+            }
         });
 
         holder.songImage.setImageResource(song.getImageResourceId());

@@ -23,7 +23,7 @@ public class SongLinkedList {
     private int playlistPictureResource;
     private String name;
     private String description;
-    private Song prevSong;
+    private int totalTime;
 
     /**
      * Returns an instance of <code>SongLinkedList</code>
@@ -32,6 +32,10 @@ public class SongLinkedList {
         this.playlistPictureResource = playlistPictureResource;
         this.name = name;
         this.description = description;
+    }
+
+    public int getTotalTime() {
+        return this.totalTime;
     }
 
     public String getName() {
@@ -101,7 +105,6 @@ public class SongLinkedList {
         }
 
         PlayerService.getInstance(null).playSong(name);
-        prevSong = playData;
 
         System.out.println(
                 String.format(
@@ -187,6 +190,7 @@ public class SongLinkedList {
 
         SongNode node = new SongNode();
         node.setData(newSong);
+        this.totalTime += newSong.getLength();
         size++;
 
         if (cursor == null) {
@@ -391,6 +395,7 @@ public class SongLinkedList {
             tail = newNode;
         }
 
+        this.totalTime += newSong.getLength();
         size++;
     }
 
@@ -451,6 +456,7 @@ public class SongLinkedList {
         }
 
         SongNode originalCursor = cursor;
+        this.totalTime -= originalCursor.getData().getLength();
         size--;
 
         if (cursor == head && head == tail) {

@@ -1,20 +1,26 @@
 package com.example.randify;
 
 import android.content.Context;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
 
 import com.example.randify.adapters.PlaylistAdapter;
 import com.example.randify.models.Song;
 import com.example.randify.models.SongLinkedList;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 public class PlayerService {
@@ -31,6 +37,14 @@ public class PlayerService {
     private TextView songArtistView;
     private ImageView albumArtView;
     private CardView playerView;
+    private TextView playlistLengthView;
+    private ProgressBar songProgress;
+    private boolean first = true;
+    private ImageButton playlistPlayPause;
+    private ImageButton shuffleButton;
+    private boolean shuffle = false;
+    private Handler progressHandler;
+    private Runnable progressRunnable;
 
     private PlayerService(Context context) {
         this.context = context;
@@ -45,12 +59,8 @@ public class PlayerService {
     }
 
     public void loadInitialData() {
-        songMap.put("Entry of Gladiators", new Song("Gladiator Guy", "Some album", "Entry of Gladiators", 15, R.raw.entry_of_gladiators, R.drawable.defaultimage));
-        songMap.put("Fanfare", new Song("Fanfare Guy", "Some album", "Fanfare", 15, R.raw.fanfare, R.drawable.defaultimage));
-        songMap.put("Ode to Joy", new Song("Beethoven", "Some album", "Ode to Joy", 15, R.raw.ode_to_joy, R.drawable.defaultimage));
-        songMap.put("Overture", new Song("Overture Guy", "Some album", "Overture", 15, R.raw.overture, R.drawable.defaultimage));
-        songMap.put("Overture1", new Song("Overture Guy", "Some album", "Overture1", 15, R.raw.overture, R.drawable.defaultimage));
-        songMap.put("Overture2", new Song("Overture Guy", "Some album", "Overture2", 15, R.raw.overture, R.drawable.defaultimage));
+        songMap.put("LIMBO", new Song("keshi", "Some album", "LIMBO", R.raw.limbo, R.drawable.keshi1));
+        songMap.put("dying to see you", new Song("bixby", "Some album", "dying to see you", R.raw.dyingtoseeyou, R.drawable.bixby1));
 
         currentPlaylist = new SongLinkedList(R.drawable.playlistpicture, "CSE214 Feels", "for when hw7 beats you down");
 
@@ -70,10 +80,38 @@ public class PlayerService {
         if (songMap.containsKey(name) && context != null) {
             this.currentSong = songMap.get(name);
             cancelSong();
-
+            this.songProgress.setProgress(0);
             this.currentSongPlayer = MediaPlayer.create(this.context, this.currentSong.getAudioResourceId());
 
+            if (progressHandler != null && progressRunnable != null) {
+                progressHandler.removeCallbacks(progressRunnable);
+            }
+
             currentSongPlayer.start();
+            this.progressHandler = new Handler();
+            this.progressRunnable = new Runnable() {
+                @Override
+                public void run() {
+                    if (currentSongPlayer != null) {
+                        int currentProgress = (int) ((currentSongPlayer.getCurrentPosition()/10)/currentSong.getLength());
+                        songProgress.setProgress(currentProgress);
+                        progressHandler.postDelayed(this, 100);
+                    }
+                }
+            };
+            progressHandler.postDelayed(progressRunnable, 0);
+
+            currentSongPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                @Override
+                public void onCompletion(MediaPlayer mp) {
+                    progressHandler.removeCallbacks(progressRunnable);
+                    progressHandler = null;
+                    progressRunnable = null;
+
+                    playNext();
+                }
+            });
+
             notifyAdapter();
             updatePlayerBar(currentSong);
         }
@@ -97,12 +135,32 @@ public class PlayerService {
         this.currentPlaylist.removeSong(name);
     }
 
-    public void setPlayerBarViews(TextView titleView, ImageButton playPauseButton, TextView artistNameView, ImageView albumArtView, CardView playerView) {
+    public void setPlayerBarViews(
+            TextView titleView,
+            ImageButton playPauseButton,
+            TextView artistNameView,
+            ImageView albumArtView,
+            CardView playerView,
+            TextView playlistLengthView,
+            ProgressBar songProgress,
+            ImageButton playlistPlayPause,
+            ImageButton playlistShuffle
+    ) {
         this.songTitleTextView = titleView;
         this.playPauseButton = playPauseButton;
         this.songArtistView = artistNameView;
         this.albumArtView = albumArtView;
         this.playerView = playerView;
+        this.playlistLengthView = playlistLengthView;
+        this.songProgress = songProgress;
+        this.playlistPlayPause = playlistPlayPause;
+        this.shuffleButton = playlistShuffle;
+    }
+
+    public void updatePlaylist() {
+        playlistLengthView.setText(
+            formatSpotifyTime(currentPlaylist.getTotalTime())
+        );
     }
 
     public void updatePlayerBar(Song newSong) {
@@ -126,13 +184,27 @@ public class PlayerService {
             if (currentSongPlayer.isPlaying()) {
                 currentSongPlayer.pause();
             } else {
-                currentSongPlayer.start();
+                if (first) {
+                    first = false;
+                    this.playSong(this.currentSong.getName());
+                } else {
+                    currentSongPlayer.start();
+                }
             }
             updatePlayPauseButton();
         }
     }
 
+    public void toggleShuffle() {
+        shuffle = !shuffle;
+        updateShuffleButton();
+    }
+
     public void playNext() {
+        if (shuffle) {
+            playRandom();
+            return;
+        }
         currentPlaylist.cursorForward();
         playSong(currentPlaylist.getCurrentSong().getName());
     }
@@ -146,8 +218,21 @@ public class PlayerService {
         if (playPauseButton != null) {
             playPauseButton.setImageResource(currentSongPlayer.isPlaying() ?
                     android.R.drawable.ic_media_pause : android.R.drawable.ic_media_play);
+            playlistPlayPause.setImageResource(currentSongPlayer.isPlaying() ?
+                    R.drawable.pause_circle : R.drawable.play_circle);
         }
     }
+
+    private void updateShuffleButton() {
+        if (shuffleButton != null) {
+            if (shuffle) {
+                shuffleButton.setColorFilter(ContextCompat.getColor(context, R.color.colorPrimary));
+            } else {
+                shuffleButton.setColorFilter(ContextCompat.getColor(context, R.color.textSecondary));
+            }
+        }
+    }
+
 
     public SongLinkedList getCurrentPlaylist() {
         return this.currentPlaylist;
@@ -208,5 +293,37 @@ public class PlayerService {
         }
 
         return avgColor;
+    }
+
+    private String formatSpotifyTime(long seconds) {
+        long hours = seconds / 3600;
+        long minutes = (seconds % 3600) / 60;
+        long remainingSeconds = seconds % 60;
+
+        if (hours > 0) {
+            return String.format("%dh %dm", hours, minutes);
+        } else if (minutes > 0) {
+            return String.format("%dm %ds", minutes, remainingSeconds);
+        } else {
+            return String.format("0m %ds", remainingSeconds);
+        }
+    }
+
+
+    public int getSongDurationSeconds(int audioResourceId) {
+        AssetFileDescriptor afd = context.getResources().openRawResourceFd(audioResourceId);
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+        String duration = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        try {
+            retriever.close();
+            afd.close();
+        } catch (IOException e) {
+            return -1;
+        }
+
+        long durationInMilliseconds = Long.parseLong(duration);
+        int durationInSeconds = (int) Math.ceil(durationInMilliseconds / 1000);
+        return durationInSeconds;
     }
 }
